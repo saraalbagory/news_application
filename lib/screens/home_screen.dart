@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:news_application/common/widgets/custom_drawer.dart';
+import 'package:news_application/screens/categories/category_news.dart';
 import 'package:news_application/settings/view/settings_view.dart';
 import 'package:news_application/sources/data/models/category_model.dart';
 import 'package:news_application/sources/view/category_view.dart';
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
           },
         ),
         body: selectedCategory != null
-              ? SourcesList()
+              ? CategoryNews(id: selectedCategory?.id??"")
               : selectedView == DrawerItems.categories
                   ? CategoryView(
                       onChoosingCategory: (p0) {
