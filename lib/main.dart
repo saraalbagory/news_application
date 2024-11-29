@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:news_application/common/theme/app_theme.dart';
+import 'package:news_application/news/view/screens/news_details.dart';
 import 'package:news_application/screens/home_screen.dart';
 
 void main() {
@@ -22,9 +23,14 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'First Method',
           theme: AppTheme.appTheme,
-          home: child,
+          initialRoute: HomeScreen.routeName,
+          routes: {
+            HomeScreen.routeName:(_)=>const HomeScreen(),
+            NewsDetails.routeName:(_)=>const NewsDetails(),
+          },
         );
       },
+
       child: const HomeScreen(),
     );
   }

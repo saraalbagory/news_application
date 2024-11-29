@@ -7,13 +7,21 @@ class NewsProvider with ChangeNotifier{
   NewsRepositry newsRepositry;
   NewsProvider():newsRepositry=NewsRepositry(DataSourcesLocator.newsDataSource);
   bool waiting=false;
-  List<ArticalModel>? news;
+  bool searching=false;
+  List<ArticalModel>? news=[];
   String? errorMessage;
-  Future getNews(String sourceId) async{
+  Future getNews(String sourceId,String pageNo) async{
     waiting=true;
     notifyListeners();
     try{
-      news=await newsRepositry.getNews(sourceId);
+      List<ArticalModel>? newArticles=await newsRepositry.getNews(sourceId, pageNo);
+      if(pageNo=="1")
+      {
+        news=newArticles;
+      }
+      else{
+        news?.addAll(newArticles);
+      }
     }
     catch(e)
     {
@@ -22,6 +30,25 @@ class NewsProvider with ChangeNotifier{
     waiting=false;
     notifyListeners();
   }
+  Future searchNews(
+    String categoryId, String searchText) async{
+      waiting=true;
+      searching=true;
+      notifyListeners();
+      List<ArticalModel>? searchedForArticles=await newsRepositry.searchNews(categoryId,searchText);
+      try{
+        
+        news=searchedForArticles;
+    }
+    catch(e)
+    {
+      errorMessage=e.toString();
+    }
+    waiting=false;
+    searching=false;
+    notifyListeners();
+
+    }
 
 
 }

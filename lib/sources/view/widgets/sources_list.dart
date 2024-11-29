@@ -6,7 +6,9 @@ import 'package:news_application/sources/data/models/sources_list_model.dart';
 
 class SourcesList extends StatefulWidget {
   final List<Sources> sourcesList;
-  const SourcesList( {super.key, required this.sourcesList});
+  final bool searching;
+  const SourcesList(
+      {super.key, required this.sourcesList, required this.searching});
 
   @override
   State<SourcesList> createState() => _SourcesListState();
@@ -25,10 +27,12 @@ class _SourcesListState extends State<SourcesList> {
               scrollDirection: Axis.horizontal,
               itemBuilder: (context, index) {
                 return Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                   child: ChoiceChip(
                     label: Text(widget.sourcesList[index].name ?? ""),
-                    padding: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 20.h),
+                    padding:
+                        EdgeInsets.only(left: 10.w, right: 10.w, bottom: 20.h),
                     showCheckmark: false,
                     selectedColor: AppColors.mainGreen,
                     labelStyle: TextStyle(
@@ -49,8 +53,10 @@ class _SourcesListState extends State<SourcesList> {
                 );
               }),
         ),
-        if(selectedId!=null) NewsList(selectedSourceId: widget.sourcesList[selectedId].id!)
-        
+        if (selectedId != null && !widget.searching)
+          NewsList(selectedSourceId: widget.sourcesList[selectedId].id!)
+        else if (selectedId != null && widget.searching)
+          NewsList(selectedSourceId: widget.sourcesList[selectedId].id!)
       ],
     );
   }

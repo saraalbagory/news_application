@@ -6,16 +6,16 @@ import 'package:news_application/news/model_view/news_provider.dart';
 import 'package:news_application/news/view/widgets/news_card.dart';
 import 'package:provider/provider.dart';
 
-class NewsList extends StatefulWidget {
-  final String selectedSourceId;
-  
-  const NewsList({super.key, required this.selectedSourceId});
+class SearchedNewsList extends StatefulWidget {
+  final String categoryId;
+
+  const SearchedNewsList({super.key, required this.categoryId});
 
   @override
-  State<NewsList> createState() => _NewsListState();
+  State<SearchedNewsList> createState() => _NewsListState();
 }
 
-class _NewsListState extends State<NewsList> {
+class _NewsListState extends State<SearchedNewsList> {
   ScrollController scrollController = ScrollController();
   int pageNo = 1;
   bool isLoadingMore = false;
@@ -25,7 +25,9 @@ class _NewsListState extends State<NewsList> {
   void initState() {
     super.initState();
     newsProvider = NewsProvider();
-    newsProvider.getNews(widget.selectedSourceId, "1");
+    print("in the search tab");
+    newsProvider.searchNews(widget.categoryId,
+        " The best Black Friday deals we’re seeing on Macbooks and other laptops");
     scrollController.addListener(_onScroll);
   }
 
@@ -40,7 +42,8 @@ class _NewsListState extends State<NewsList> {
         previousOffset = scrollController.offset;
       });
       await newsProvider
-          .getNews(widget.selectedSourceId, pageNo.toString())
+          .searchNews(widget.categoryId,
+              " The best Black Friday deals we’re seeing on Macbooks and other laptops")
           .then((_) {
         setState(() => isLoadingMore = false);
       });
@@ -49,10 +52,11 @@ class _NewsListState extends State<NewsList> {
   }
 
   @override
-  void didUpdateWidget(covariant NewsList oldWidget) {
+  void didUpdateWidget(covariant SearchedNewsList oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    newsProvider.getNews(widget.selectedSourceId, "1");
+    newsProvider.searchNews(widget.categoryId, 
+        " The best Black Friday deals we’re seeing on Macbooks and other laptops");
   }
 
   @override
@@ -65,6 +69,7 @@ class _NewsListState extends State<NewsList> {
           ChangeNotifierProvider(
             create: (_) => newsProvider,
             child: Consumer<NewsProvider>(builder: (_, value, child) {
+              print(value.news);
               return value.waiting
                   ? const LoadingWidget()
                   : value.errorMessage != null
