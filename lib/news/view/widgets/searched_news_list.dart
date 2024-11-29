@@ -8,8 +8,9 @@ import 'package:provider/provider.dart';
 
 class SearchedNewsList extends StatefulWidget {
   final String categoryId;
-
-  const SearchedNewsList({super.key, required this.categoryId});
+  final String searchText;
+  const SearchedNewsList(
+      {super.key, required this.categoryId, required this.searchText});
 
   @override
   State<SearchedNewsList> createState() => _NewsListState();
@@ -26,8 +27,7 @@ class _NewsListState extends State<SearchedNewsList> {
     super.initState();
     newsProvider = NewsProvider();
     print("in the search tab");
-    newsProvider.searchNews(widget.categoryId,
-        " The best Black Friday deals we’re seeing on Macbooks and other laptops");
+    newsProvider.searchNews(widget.categoryId, widget.searchText);
     scrollController.addListener(_onScroll);
   }
 
@@ -42,8 +42,7 @@ class _NewsListState extends State<SearchedNewsList> {
         previousOffset = scrollController.offset;
       });
       await newsProvider
-          .searchNews(widget.categoryId,
-              " The best Black Friday deals we’re seeing on Macbooks and other laptops")
+          .searchNews(widget.categoryId, widget.searchText)
           .then((_) {
         setState(() => isLoadingMore = false);
       });
@@ -55,8 +54,7 @@ class _NewsListState extends State<SearchedNewsList> {
   void didUpdateWidget(covariant SearchedNewsList oldWidget) {
     // TODO: implement didUpdateWidget
     super.didUpdateWidget(oldWidget);
-    newsProvider.searchNews(widget.categoryId, 
-        " The best Black Friday deals we’re seeing on Macbooks and other laptops");
+    newsProvider.searchNews(widget.categoryId, widget.searchText);
   }
 
   @override

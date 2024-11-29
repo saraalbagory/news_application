@@ -12,7 +12,7 @@ class NewsApiSource extends NewsDataSource {
     var url = Uri.https(ApiInfo.baseUrl, ApiInfo.newsEndpoint, {
       'apiKey': ApiInfo.apiKey,
       'sources': sourceId,
-      'pageSize': '5',
+      'pageSize': '10',
       'page': pageNo
     });
     var response = await http.get(url);
@@ -29,9 +29,10 @@ class NewsApiSource extends NewsDataSource {
   @override
   Future<List<ArticalModel>> searchNews(
       String categoryId, String searchText) async {
+        try{
     var url = Uri.https(
       ApiInfo.baseUrl,
-      ApiInfo.newsEndpoint,
+      ApiInfo.searchEndpoint,
       {
         'apiKey': ApiInfo.apiKey,
         'searchIn': 'title',
@@ -39,6 +40,7 @@ class NewsApiSource extends NewsDataSource {
         'q': searchText
       },
     );
+
     var response = await http.get(url);
     String body = response.body;
     var bodyJson = jsonDecode(body);
@@ -50,4 +52,11 @@ class NewsApiSource extends NewsDataSource {
       throw newsReturned.status.toString();
     }
   }
+  catch(e)
+  {
+    print("error in fetching");
+    print(e.toString());
+    throw e.toString();
+  }
+      }
 }

@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
   DrawerItems selectedView = DrawerItems.categories;
   CategoryModel? selectedCategory;
   bool isSearchClicked = false;
+  bool finished=false;
   TextEditingController searchBarController = TextEditingController();
   @override
   Widget build(BuildContext context) {
@@ -42,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         }),
                     searchClicked: () => setState(() {
                           isSearchClicked = true;
+                          finished=true;
                           print("search");
                         }))
                 : selectedCategory != null
@@ -67,8 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
           body: selectedCategory != null
-              ? isSearchClicked
-                  ? SearchedNewsList(categoryId: selectedCategory?.id??"")
+              ? isSearchClicked&& finished
+                  ? SearchedNewsList(categoryId: selectedCategory?.id??"",searchText:searchBarController.text)
                   : CategoryNews(
                       id: selectedCategory?.id ?? "", searching: true)
               : selectedView == DrawerItems.categories
