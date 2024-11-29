@@ -7,7 +7,8 @@ import 'package:provider/provider.dart';
 
 class CategoryNews extends StatefulWidget {
   final String id;
-  const CategoryNews({super.key, required this.id});
+  final bool searching;
+  const CategoryNews({super.key, required this.id, required this.searching});
 
   @override
   State<CategoryNews> createState() => _CategoryNewsState();
@@ -15,10 +16,10 @@ class CategoryNews extends StatefulWidget {
 
 class _CategoryNewsState extends State<CategoryNews> {
   late SourcesProvider sourcesProvider;
+
   @override
   void initState() {
     super.initState();
-
     sourcesProvider = SourcesProvider();
     sourcesProvider.getSources(widget.id);
   }
@@ -36,7 +37,7 @@ class _CategoryNewsState extends State<CategoryNews> {
                     ? CustomErrorWidget(
                         errorMessage: sourcesProvider.errorMessage!,
                       )
-                    : SourcesList(sourcesList: value.sources ?? []);
+                    : SourcesList(sourcesList: value.sources ?? [],searching: widget.searching,);
           }),
         )
       ]);
